@@ -25,7 +25,7 @@ public class day1 {
         int count = 0;
         for (String s : result) {
             if (s.isEmpty() || s.isBlank()) {
-                if (count > maxValues.get(0) || count > maxValues.get(1) || count > maxValues.get(2)) {
+                if (count > maxValues.get(2)) {
                     maxValues.set(2, count);
                     maxValues.sort(Collections.reverseOrder());
                 }
