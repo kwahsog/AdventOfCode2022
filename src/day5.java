@@ -1,10 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -12,14 +9,35 @@ public class day5 {
 
     public static void main(String[] args) throws IOException {
         List<String> result;
-        try (Stream<String> lines = Files.lines(Paths.get("aoc5.txt"))) {
+        try (Stream<String> lines = Files.lines(Paths.get("res/aoc5.txt"))) {
             result = lines.collect(Collectors.toList());
         }
-        System.out.println(ruckSackSum(result));
+        System.out.println(craneMoving(result));
     }
 
-    public static String ruckSackSum(List<String> result) {
+    public static String craneMoving(List<String> result) {
+        var arr = setup();
+        for (int i = 0; i < result.size(); i++) {
+            if (result.get(i).length() == 0 || result.get(i).charAt(0) != 'm') {
+                continue;
+            }
+            int noMoves = Integer.parseInt(result.get(i).split(" ")[1]);
+            int fromStack = Integer.parseInt(result.get(i).split(" ")[3]);
+            int toStack = Integer.parseInt(result.get(i).split(" ")[5]);
+            var tempArr = new ArrayList<String>();
+            for (int j = 0; j < noMoves; j++) {
+                var ele = arr.get(fromStack - 1).pop();
+                tempArr.add(ele);
+            }
+            Collections.reverse(tempArr);
+            tempArr.forEach((x)-> arr.get(toStack - 1).add(x));
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        arr.forEach((x)-> stringBuilder.append(x.peek()));
+        return stringBuilder.toString();
+    }
 
+    public static List<Stack<String>> setup() {
         var stack1 = new Stack<String>();
         stack1.push("N");
         stack1.push("C");
@@ -105,26 +123,8 @@ public class day5 {
         arr.add(stack8);
         arr.add(stack9);
 
-        for (int i = 0; i < result.size(); i++) {
-            if (result.get(i).length() == 0 || result.get(i).charAt(0) != 'm') {
-                continue;
-            }
-            int noMoves = Integer.parseInt(result.get(i).split(" ")[1]);
-            int fromStack = Integer.parseInt(result.get(i).split(" ")[3]);
-            int toStack = Integer.parseInt(result.get(i).split(" ")[5]);
-            for (int j = 0; j < noMoves; j++) {
-                var ele = arr.get(fromStack - 1).pop();
-                arr.get(toStack - 1).add(ele);
-            }
-        }
-
-        arr.forEach((x)-> {
-            System.out.print(x.peek());
-        });
-
-        return "0";
+        return arr;
     }
-
 
 }
 

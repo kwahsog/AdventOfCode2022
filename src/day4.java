@@ -9,7 +9,7 @@ public class day4 {
 
     public static void main(String[] args) throws IOException {
         List<String> result;
-        try (Stream<String> lines = Files.lines(Paths.get("aoc4.txt"))) {
+        try (Stream<String> lines = Files.lines(Paths.get("res/aoc4.txt"))) {
             result = lines.collect(Collectors.toList());
         }
         System.out.println(countIntersections(result));

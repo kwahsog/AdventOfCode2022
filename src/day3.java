@@ -9,7 +9,7 @@ public class day3 {
 
     public static void main(String[] args) throws IOException {
         List<String> result;
-        try (Stream<String> lines = Files.lines(Paths.get("aoc3.txt"))) {
+        try (Stream<String> lines = Files.lines(Paths.get("res/aoc3.txt"))) {
             result = lines.collect(Collectors.toList());
         }
         System.out.println(ruckSackSum(result));
