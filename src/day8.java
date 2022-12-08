@@ -12,9 +12,8 @@ public class day8 {
         try (Stream<String> lines = Files.lines(Paths.get("res/aoc8.txt"))) {
             result = lines.collect(Collectors.toList());
         }
-        var x = parseInput(result);
-        var result2 = computeTrees(x);
-        System.out.println((result2));
+        var grid = parseInput(result);
+        System.out.println((computeTrees(grid)));
     }
 
 
@@ -30,105 +29,81 @@ public class day8 {
 
     public static int computeTrees(int[][] grid) {
         int length = grid[0].length;
-        int totalNoTrees = 0;
-
-//        boolean x = computeUp(grid, 1, 4);
-//        boolean y = computeDown(grid, 1, 4);
-//        boolean z = computeLeft(grid, 1, 4);
-//        boolean m = computeRight(grid, 1, 4);
-
+        int maxSum = 0;
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < length; j++) {
-
-                var result = computeUp(grid, i, j) || computeDown(grid, i, j) || computeLeft(grid, i, j) || computeRight(grid, i, j);
-                boolean up = computeUp(grid, i, j);
-                boolean down = computeDown(grid, i, j);
-                boolean left = computeLeft(grid, i, j);
-                boolean right = computeRight(grid, i, j);
-                System.out.println(String.format("value: %s, up %s , down %s, left %s, right %s", grid[i][j], up, down, left, right));
-
-                if (result) {
-                    System.out.println("Result true: " + i + "," + j);
-                    totalNoTrees++;
+               var result = computeUp(grid, i, j) * computeDown(grid, i, j) * computeLeft(grid, i, j) * computeRight(grid, i, j);
+               if (result > maxSum) {
+                    System.out.println("Result found: " + i + "," + j);
+                    maxSum = result;
                 }
             }
         }
-        return totalNoTrees;
+        return maxSum;
     }
 
-    public static boolean computeDown(int[][] grid, int startingx, int startingy) {
-//        if (startingy == 0) {
-//            return true;
-//        }
+    public static int computeDown(int[][] grid, int startingx, int startingy) {
         int maxVal = grid[startingx][startingy];
-        boolean success = true;
+        int sum = 0;
         int adjustedX = startingx + 1;
         while (adjustedX < grid.length) {
             int currVal = grid[adjustedX][startingy];
+            sum++;
             if (currVal < maxVal) {
                 adjustedX++;
             } else {
-                return false;
+                return sum;
             }
         }
-        return success;
+        return sum;
     }
 
-
-//    up false , down true, left false, right true
-//    Result true: 1,4
-    public static boolean computeUp(int[][] grid, int startingx, int startingy) {
-//        if (startingy == 0) {
-//            return true;
-//        }
+    public static int computeUp(int[][] grid, int startingx, int startingy) {
         int maxVal = grid[startingx][startingy];
-        boolean success = true;
+        int sum = 0;
         int adjustedX = startingx - 1;
         while (adjustedX > -1) {
             int currVal = grid[adjustedX][startingy];
+            sum++;
             if (currVal < maxVal) {
                 adjustedX--;
             } else {
-                return false;
+                return sum;
             }
         }
-        return success;
+        return sum;
     }
 
 
-    public static boolean computeLeft(int[][] grid, int startingx, int startingy) {
-//        if (startingy == 0) {
-//            return true;
-//        }
+    public static int computeLeft(int[][] grid, int startingx, int startingy) {
         int maxVal = grid[startingx][startingy];
-        boolean success = true;
+        int sum = 0;
         int adjustedY = startingy - 1;
         while (adjustedY > -1) {
             int currVal = grid[startingx][adjustedY];
+            sum++;
             if (currVal < maxVal) {
                 adjustedY--;
             } else {
-                return false;
+                return sum;
             }
         }
-        return success;
+        return sum;
     }
 
-    public static boolean computeRight(int[][] grid, int startingx, int startingy) {
-//        if (startingy == 0) {
-//            return true;
-//        }
+    public static int computeRight(int[][] grid, int startingx, int startingy) {
         int maxVal = grid[startingx][startingy];
-        boolean success = true;
+        int sum = 0;
         int adjustedY = startingy + 1;
         while (adjustedY < grid.length) {
             int currVal = grid[startingx][adjustedY];
+            sum++;
             if (currVal < maxVal) {
                 adjustedY++;
             } else {
-                return false;
+                return sum;
             }
         }
-        return success;
+        return sum;
     }
 }
