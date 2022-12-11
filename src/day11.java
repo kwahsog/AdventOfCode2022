@@ -8,12 +8,7 @@ public class day11 {
 
 
     public static void main(String[] args) throws IOException {
-        List<String> result;
-//        try (Stream<String> lines = Files.lines(Paths.get("res/aoc11.txt"))) {
-//            result = lines.collect(Collectors.toList());
-//        }
-
-//        processTestCase();
+        processTestCase();
         processAoC11();
     }
 
@@ -121,15 +116,15 @@ public class day11 {
 
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < oneTrueMonkeyMap.size(); j++) {
-                oneTrueMonkeyMap.get(j).monkeyDo();
+                oneTrueMonkeyMap.get(j).monkeyDo(oneTrueMonkeyMap);
             }
         }
 
-        System.out.println("Test monkeys done");
+        System.out.println("Real monkeys done");
         var list = new ArrayList<Integer>();
         oneTrueMonkeyMap.forEach((k, v) -> list.add(v.monkeyBusinessCount));
         list.sort(Collections.reverseOrder());
-        System.out.println("Monkey business: " + (list.get(0) * list.get(1)));
+        System.out.println("Real monkey business: " + (list.get(0) * list.get(1))); //112815
     }
 
 
@@ -180,7 +175,7 @@ public class day11 {
 
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < exampleMonkeyMap.size(); j++) {
-                exampleMonkeyMap.get(j).monkeyDo();
+                exampleMonkeyMap.get(j).monkeyDo(exampleMonkeyMap);
             }
         }
 
@@ -206,16 +201,16 @@ public class day11 {
 
         public int monkeyBusinessCount = 0;
 
-        public void monkeyDo() {
+        public void monkeyDo(Map<Integer, Monkey> monkeyMap) {
             for (Integer x : items) {
                 monkeyBusinessCount++;
                 var newVal = this.inspect(x);
                 newVal = Math.floorDiv(newVal, 3);
 
                 if (newVal % divisibleBy == 0) {
-                    oneTrueMonkeyMap.get(monkeyTargetTrue).monkeyGive(newVal);
+                    monkeyMap.get(monkeyTargetTrue).monkeyGive(newVal);
                 } else {
-                    oneTrueMonkeyMap.get(monkeyTargetFalse).monkeyGive(newVal);
+                    monkeyMap.get(monkeyTargetFalse).monkeyGive(newVal);
                 }
             }
             items.clear();
